@@ -15,7 +15,8 @@ class MapContainer extends Component {
        markerProperties: [], // Properties of Each Marker
        activeMarker: null,  //Shows the active marker upon click
        activeMarkerProperties: null, // Properties of Active Marker
-       showingInfoWindow: false  //Hides or the shows the infoWindow
+       showingInfoWindow: false,  //Hides or the shows the infoWindow
+       apiErrorMessage:""
    };
 
    componentDidMount = () => {
@@ -148,7 +149,17 @@ class MapContainer extends Component {
                    marker.setAnimation(this.props.google.maps.Animation.BOUNCE);
                    this.setState({showingInfoWindow: true, activeMarker: marker, activeMarkerProperties});
                }
-           })
+           }).catch((error) => {
+
+              activeMarkerProperties = {
+                  ...props
+              };
+              if (this.state.activeMarker)
+                  this.state.activeMarker.setAnimation(null);
+              marker.setAnimation(this.props.google.maps.Animation.BOUNCE);
+              this.setState({showingInfoWindow: true, activeMarker: marker, activeMarkerProperties,apiErrorMessage:"Error occurred loading data from FourSquare API"});
+        			 alert('Sorry! Error occurred whilst loading data from FourSquare API. Locations information will not be displayed ')
+        	 })
    }
 
    closeInfoWindow = () => {
@@ -184,6 +195,11 @@ class MapContainer extends Component {
                      <>
                        <h3>{this.state.activeMarkerProperties.name}</h3>
                        <p>{this.state.activeMarkerProperties.street}</p>
+                       {this.state.apiErrorMessage &&
+                         <>
+                         <p> {this.state.apiErrorMessage} </p>
+                         </>
+                       }
                        <div>
                             {this.state.activeMarkerProperties.images &&
                               <>

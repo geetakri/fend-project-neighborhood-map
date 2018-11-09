@@ -33,7 +33,13 @@ class ViewList extends Component {
           background: "transparent",
           border: "none",
           color: "#2e3d49"
+      },
+      labelStyle: {
+        visibility:"hidden",
+        display: "none"
       }
+
+
 
   };
 
@@ -50,7 +56,9 @@ class ViewList extends Component {
         <Drawer open={this.props.drawerOpen} onClose={this.props.toggleListDrawer}>
             <div style={this.styles.listDivStyle}>
               <h2 style={this.styles.listHeading}>Bakery Shops</h2>
-              <input style={this.styles.inputStyle} type="text" placeholder="Filter Location"
+
+              <label htmlFor="txtbox" style={this.styles.labelStyle}>Filter Location</label>
+              <input id ="txtbox" style={this.styles.inputStyle} type="text" placeholder="Filter Location"
                     name="filter"
                     onChange={e => this.updateQuery(e.target.value)} value={this.state.query} />
               <ul style={this.styles.ulStyle}>
